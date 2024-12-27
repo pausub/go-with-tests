@@ -2,6 +2,12 @@ package structs
 
 import "math"
 
+type Shape interface {
+	Area() float64
+}
+
+// no neeed to define "implements Shape"
+// interface resolution is implicit
 type Rectangle struct {
 	X, Y float64
 }
@@ -21,5 +27,5 @@ func (r Rectangle) Area() float64 {
 }
 
 func (c Circle) Area() float64 {
-	return c.R * c.R * math.Pi
+	return math.Pow(c.R, 2) * math.Pi
 }
