@@ -16,6 +16,10 @@ type Circle struct {
 	R float64
 }
 
+type Triangle struct {
+	Base , Height float64
+}
+
 func Perimeter(r Rectangle) float64 {
 	return 2 * (r.X + r.Y)
 }
@@ -28,4 +32,8 @@ func (r Rectangle) Area() float64 {
 
 func (c Circle) Area() float64 {
 	return math.Pow(c.R, 2) * math.Pi
+}
+
+func (t Triangle) Area() float64 {
+	return t.Base * t.Height / 2
 }
