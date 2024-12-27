@@ -1,6 +1,9 @@
 package pointers
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // by declaring type from int we can add specific methods
 // to Bitcoin, such as String()
@@ -8,9 +11,11 @@ type Bitcoin int
 
 type Wallet struct {
 
-	// lower case letter: package private 
+	// lower case letter: package private
 	balance Bitcoin
 }
+
+var ErrInsufficientFunds = errors.New("insuficient funds in balance")
 
 // w is a copied argument to a method
 func (w Wallet) BuggyDeposit(amount Bitcoin) {
@@ -24,8 +29,12 @@ func (w *Wallet) Deposit(amount Bitcoin) {
 	w.balance += amount
 }
 
-func (w *Wallet) Withdraw(amount Bitcoin) {
+func (w *Wallet) Withdraw(amount Bitcoin) error {
+	if w.balance < amount {
+		return ErrInsufficientFunds
+	}
 	w.balance -= amount
+	return nil
 }
 
 // no need for a pointer here, just convention
