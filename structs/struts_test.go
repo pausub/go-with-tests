@@ -13,7 +13,7 @@ func TestArea(t *testing.T) {
 	// anonymous struct slice for Table Driven Tests
 	// each line is table represents single test case
 	areaTests := []struct {
-		name string
+		name  string
 		shape Shape
 		want  float64
 	}{
