@@ -6,26 +6,32 @@ import (
 )
 
 func TestWallet(t *testing.T) {
-	wallet := Wallet{}
+	t.Run("Deposit", func(t *testing.T) {
+		wallet := Wallet{}
 
-	// doesnt actually add to balance
-	wallet.BuggyDeposit(10)
+		// doesnt actually add to balance
+		wallet.BuggyDeposit(Bitcoin(10))
 
-	// adds to balance
-	wallet.Deposit(10)
+		// adds to balance
+		wallet.Deposit(Bitcoin(10))
 
-	// %p: base 16 with leading 0x for address printing
-	fmt.Printf("address of wallet in tests: %p\n", &wallet)
+		// %p: base 16 with leading 0x for address printing
+		fmt.Printf("address of wallet in tests: %p\n", &wallet)
 
-	got := wallet.Balance()
-	want := 10
+		assertBalance(t, wallet, Bitcoin(10))
+	})
 
-	assertCorrectResult(t, got, want)
+	t.Run("Withdraw", func(t *testing.T) {
+		wallet := Wallet{balance: Bitcoin(20)}
+		wallet.Withdraw(Bitcoin(10))
+		assertBalance(t, wallet, Bitcoin(10))
+	})
 }
 
-func assertCorrectResult(t testing.TB, got, want int) {
+func assertBalance(t testing.TB, wallet Wallet, want Bitcoin) {
 	t.Helper()
-	if got != want {
-		t.Errorf("got %d, want %d", got, want)
+	if wallet.balance != want {
+		// String() is called when using %s formatter
+		t.Errorf("got %s, want %s", wallet.balance, want)
 	}
 }
