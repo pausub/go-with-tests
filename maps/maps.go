@@ -4,7 +4,12 @@ import "errors"
 
 type Dictionary map[string]string
 
-var ErrNotFound = errors.New("word not found")
+// grouping of package visible variables
+var (
+	ErrNotFound        = errors.New("word not found")
+	ErrWordExists      = errors.New("word already exists")
+	ErrWordDoesntExist = errors.New("word doenst exist")
+)
 
 // method with multiple return types
 func (d Dictionary) Search(key string) (string, error) {
@@ -18,6 +23,29 @@ func (d Dictionary) Search(key string) (string, error) {
 
 // d is a copy of a pointer to map, not copy of underlying structure
 // so we must use "Dictionary" instead of "*Dictionary"
-func (d Dictionary) Add(key, value string) {
-	d[key] = value
+func (d Dictionary) Add(key, value string) error {
+	_, found := d[key]
+	if !found {
+		d[key] = value
+		return nil
+	}
+	return ErrWordExists
+}
+
+func (d Dictionary) Update(key, value string) error {
+	_, found := d[key]
+	if found {
+		d[key] = value
+		return nil
+	}
+	return ErrWordDoesntExist
+}
+
+func (d Dictionary) Delete(key string) error {
+	_, found := d[key]
+	if found {
+		delete(d, key)
+		return nil
+	}
+	return ErrWordDoesntExist
 }
