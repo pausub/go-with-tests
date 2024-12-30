@@ -1,4 +1,4 @@
-package sum
+package main
 
 // array size is aprt of type. Its impossible to declare array
 // type without size.

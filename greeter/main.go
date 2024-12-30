@@ -1,20 +1,22 @@
 package main
 
 import (
+	"fmt"
+	"io"
 	"log"
 	"net/http"
-
-	//	"os"
-
-	"github.com/pausub/go-with-tests/greeter"
 )
+
+func Greet(writer io.Writer, name string) {
+	fmt.Fprintf(writer, "Hello, %s", name)
+}
 
 // func main() {
 // 	greeter.Greet(os.Stdout, "Pupup\n")
 // }
 
 func MyGreeterHandler(w http.ResponseWriter, r *http.Request) {
-	greeter.Greet(w, "world")
+	Greet(w, "world")
 }
 
 func main() {
